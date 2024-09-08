@@ -24,9 +24,7 @@ Not convinced? [Read more about why this exists below](#why-this-exists).
 
 This package has a simple command line interface:
 
-run `yarn native-lock` to generate native lockfiles in the root of your project repo
-
-(to avoid prompts you can run it with `--non-interactive` to acknowledge the prebuild warning)
+run `yarn native-lock write` to generate native lockfiles in the root of your project repo and `yarn native-lock check` to compare. Run with `help` for more options.
 
 ## Lockfile Update Approaches
 
