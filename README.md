@@ -42,4 +42,4 @@ You may notice the occasional drift in native dependencies with Expo's Managed W
 
 The above may be desirable if you're OK with the risk that the underlying dependency does not use semantic versioning correctly and maintains backwards compatibility. Even if the version bump is not a breaking change it may have undesirable or unexpected runtime characteristics. This risk increases if the maintainer of the JS dependency is not also the maintainer of the native dependency it uses.
 
-It can also be good to have visibility into the state of native dependencies for security scanning or supply chain management. With the recommended approach of ignoring the native project folders under CNG, you have no visibility into what dependencies your yarn lockfile-defined dependencies are pulling in.
+It can also be good to have visibility into the state of native dependencies for security scanning or supply chain management (SAST scans). With the recommended approach of ignoring the native project folders under CNG, you have no visibility into what dependencies your yarn lockfile-defined dependencies are pulling in.
