@@ -1,7 +1,7 @@
 {
   "name": "expo-native-lockfiles",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "app.plugin.js",
   "repository": "https://github.com/sterlingwes/expo-native-lockfiles",
   "author": "Wes Johnson <wes@swj.io>",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "build-cli": "cd cli && tsc",
     "build-plugin": "cd plugin && tsc",
     "example-install": "yarn pack && cd example && yarn add --cache-folder .yarn ../expo-native-lockfiles-*.tgz",
-    "clean": "rm expo-native-lockfiles-*.tgz && cd example && rm -rf node_modules .yarn gradle.lockfile Podfile.lock",
+    "clean": "rm -f expo-native-lockfiles-*.tgz && cd example && rm -rf node_modules .yarn gradle.lockfile Podfile.lock",
     "setup": "yarn clean && yarn build && yarn example-install"
   }
 }

@@ -3841,9 +3841,9 @@ expo-modules-core@1.12.24:
   dependencies:
     invariant "^2.2.4"
 
-expo-native-lockfiles@../expo-native-lockfiles-v1.0.0.tgz:
-  version "1.0.0"
-  resolved "../expo-native-lockfiles-v1.0.0.tgz#4e46c60ff96f0a2e57e4e77b23ccff5768b24f16"
+expo-native-lockfiles@../expo-native-lockfiles-v0.1.0.tgz:
+  version "0.1.0"
+  resolved "../expo-native-lockfiles-v0.1.0.tgz#a34c2a12b170aa3cb7c5b2f26e63c0961a3a8b81"
 
 expo-router@~3.5.23:
   version "3.5.23"

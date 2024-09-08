@@ -3,13 +3,20 @@ import { copyFile } from "fs/promises";
 
 import { $, prompt } from "./utils";
 
+let nonInteractive = false;
+if (process.argv.includes("--non-interactive")) {
+  nonInteractive = true;
+}
+
 const run = async () => {
-  const result = await prompt(
-    'I will run "expo prebuild --clean" to generate fresh native projects, then copy the lockfiles to the root of your repo. Should I continue? (y/N): '
-  );
-  if (result !== "y") {
-    console.log("OK! Aborting...");
-    return;
+  if (nonInteractive === false) {
+    const result = await prompt(
+      'I will run "expo prebuild --clean" to generate fresh native projects, then copy the lockfiles to the root of your repo. Should I continue? (y/N): '
+    );
+    if (result !== "y") {
+      console.log("OK! Aborting...");
+      return;
+    }
   }
 
   await $`CI=1 yarn expo prebuild --clean`;
