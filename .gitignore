@@ -133,6 +133,8 @@ dist
 .expo/
 example/android
 example/ios
+example/Podfile.lock
+example/gradle.lockfile
 
 # build output
 build/
