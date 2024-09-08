@@ -4,11 +4,18 @@ import { copyFile } from "fs/promises";
 import { $, prompt, linebreak, shasumHash } from "./utils";
 
 let nonInteractive = false;
-if (process.argv.includes("--non-interactive")) {
+if (process.argv.includes("--non-interactive") || !!process.env.CI) {
   nonInteractive = true;
 }
 
-const cliCmdIndex = process.argv.indexOf("native-lock");
+const cliCmdIndex = process.argv.findIndex((arg) =>
+  arg.includes("native-lock")
+);
+if (cliCmdIndex === -1) {
+  console.error("Could not parse native-lock command args");
+  process.exit(1);
+}
+
 const subCommand =
   process.argv
     .slice(cliCmdIndex + 1)
