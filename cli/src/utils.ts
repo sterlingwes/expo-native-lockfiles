@@ -24,3 +24,13 @@ export const prompt = (query: string) =>
     rl.close();
     return result;
   });
+
+export const linebreak = () => console.log("");
+
+export const shasumHash = (shasumOutput: unknown) => {
+  if (typeof shasumOutput !== "string") {
+    throw new Error("Unexpected gradle checksum output line");
+  }
+  // in the form of '<checksum>  gradle.lockfile'
+  return shasumOutput.trim().split(/\s+/)[0];
+};

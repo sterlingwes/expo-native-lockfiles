@@ -13,6 +13,9 @@ const warnDoesNotExistPrefix = "Lockfile does not exist at";
 const warnNextStepsSuffix =
   '(not copying to project: run "yarn native-lock" to generate and commit them)';
 
+// this flag is set by the CLI when it runs prebuild during lockfile generation
+const generating = !!process.env.ENL_GENERATING;
+
 const buildGradleReplacePoint = "android {";
 const dependencyLockCall = `
 dependencyLocking {
@@ -79,6 +82,10 @@ const withPodsLockfile: ConfigPlugin = (config) => {
 };
 
 const withLockfilePlugin: ConfigPlugin = (config) => {
+  if (!generating) {
+    return withGradleLockfileActivated(config);
+  }
+
   return withGradleLockfileActivated(
     withGradleLockfile(withPodsLockfile(config))
   );

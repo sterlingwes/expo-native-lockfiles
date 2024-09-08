@@ -3843,7 +3843,7 @@ expo-modules-core@1.12.24:
 
 expo-native-lockfiles@../expo-native-lockfiles-v0.1.0.tgz:
   version "0.1.0"
-  resolved "../expo-native-lockfiles-v0.1.0.tgz#f7c9b86d9a8e59cc051a79d7e257a757075b71dd"
+  resolved "../expo-native-lockfiles-v0.1.0.tgz#0196154d2d33cafb68d95e2c64ad4954a18cbf73"
 
 expo-router@~3.5.23:
   version "3.5.23"
