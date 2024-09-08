@@ -23,6 +23,7 @@ const subCommand =
 
 const printHelp = () => {
   linebreak();
+  console.log("expo-native-lockfiles CLI");
   console.log("Usage: yarn native-lock [subcommand]");
   linebreak();
   console.log("Subcommands:");
