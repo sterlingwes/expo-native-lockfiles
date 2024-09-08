@@ -128,3 +128,12 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# expo
+.expo/
+example/android
+example/ios
+
+# build output
+build/
+.yarn/

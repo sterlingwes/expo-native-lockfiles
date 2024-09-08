@@ -1,0 +1,7 @@
+.gitignore
+src/
+example/
+node_modules/
+tsconfig.json
+bun.lockb
+*.tgz
