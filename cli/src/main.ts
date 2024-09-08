@@ -22,22 +22,20 @@ const subCommand =
     .find((arg) => arg.startsWith("--") === false) ?? "help";
 
 const printHelp = () => {
-  linebreak();
-  console.log("expo-native-lockfiles CLI");
-  console.log("Usage: yarn native-lock [subcommand]");
-  linebreak();
-  console.log("Subcommands:");
-  console.log(
-    "  check: Check if lockfiles after prebuild are the same as those in the root of the repo."
-  );
-  console.log(
-    "  write: Write the lockfiles generated after prebuild to the root of the repo."
-  );
-  console.log("  help: Print this help message.");
-  linebreak();
-  console.log("Options:");
-  console.log("  --non-interactive: Skip interactive prompts (assumes 'yes').");
-  linebreak();
+  const help = `
+expo-native-lockfiles CLI
+Usage: yarn native-lock [subcommand]
+
+Subcommands:
+  check: Check if lockfiles after prebuild are the same as those in the root of the repo.
+  write: Write the lockfiles generated after prebuild to the root of the repo.
+  help: Print this help message.
+
+Options:
+  --non-interactive: Skip interactive prompts (assumes 'yes').
+
+`;
+  console.log(help);
 };
 
 const knownSubCommands = ["help", "check", "write"];
