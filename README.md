@@ -4,13 +4,13 @@ Achieve more reproducible builds by committing your native project lockfiles to 
 
 ## What this does
 
-This library is both a config plugin and a CLI tool for managing native mobile project lockfiles. By default, Expo's Continuous Native Generation ("CNG") pattern generates an iOS project with a Cocoapods lockfile, and an Android project with no Gradle lockfile, based on javascript dependencies locked with yarn.lock or similar. It allows you to:
+This library is both a config plugin and a CLI tool for managing native mobile project lockfiles. By default, Expo's [Continuous Native Generation ("CNG")](https://docs.expo.dev/workflow/continuous-native-generation/) pattern generates an iOS project with a Cocoapods lockfile, and an Android project with no Gradle lockfile, based on javascript dependencies locked with yarn.lock or similar. This module ensures more stable inputs to your native builds by allowing you to:
 
-- update & commit native lockfiles as you update and change JS dependencies
-- ensure your CNG-managed native projects use those committed lockfiles and don't generate them on the fly with every expo prebuild
+- update & commit native lockfiles as you update and change JS dependencies that depend on native ones
+- ensure your CNG-managed native projects reference the committed lockfiles and don't generate them on the fly with every expo prebuild
 - setup a Gradle lockfile for your Android project
 
-Not convinced? Read more about why this exists below.
+Not convinced? [Read more about why this exists below](#why-this-exists).
 
 ## Getting started
 
