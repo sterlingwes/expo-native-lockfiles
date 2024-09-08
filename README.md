@@ -15,7 +15,7 @@ Not convinced? [Read more about why this exists below](#why-this-exists).
 ## Getting started
 
 - `yarn add -D expo-native-lockfiles`
-- add `expo-native-lockfiles` as a plugin to your app.json or app.config.js
+- add `expo-native-lockfiles` as a plugin to your app.json or app.config.js ([see example](https://github.com/sterlingwes/expo-native-lockfiles/blob/87359aa92e6bceccc6b30fee1b0c3a2ba921aa35/example/app.json#L31))
 - setup an update approach of either:
   1. a CI check job that asserts that your native lockfiles didn't change (recommended)
   2. a postinstall step for your JS dependencies (quicker, slows down dependency installs)
