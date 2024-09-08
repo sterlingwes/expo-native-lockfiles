@@ -8,12 +8,64 @@ if (process.argv.includes("--non-interactive")) {
   nonInteractive = true;
 }
 
-let check = false;
-if (process.argv.includes("--check")) {
-  check = true;
+const cliCmdIndex = process.argv.indexOf("native-lock");
+const subCommand =
+  process.argv
+    .slice(cliCmdIndex + 1)
+    .find((arg) => arg.startsWith("--") === false) ?? "help";
+
+const printHelp = () => {
+  linebreak();
+  console.log("Usage: yarn native-lock [subcommand]");
+  linebreak();
+  console.log("Subcommands:");
+  console.log(
+    "  check: Check if lockfiles after prebuild are the same as those in the root of the repo."
+  );
+  console.log(
+    "  write: Write the lockfiles generated after prebuild to the root of the repo."
+  );
+  console.log("  help: Print this help message.");
+  linebreak();
+  console.log("Options:");
+  console.log("  --non-interactive: Skip interactive prompts (assumes 'yes').");
+  linebreak();
+};
+
+const knownSubCommands = ["help", "check", "write"];
+if (!knownSubCommands.includes(subCommand)) {
+  console.error(
+    `Unknown subcommand "${subCommand}". Supported native-lock subcommands are: ${knownSubCommands.join(
+      ", "
+    )}`
+  );
+  printHelp();
+  process.exit(1);
 }
 
+if (subCommand === "help") {
+  printHelp();
+  process.exit(0);
+}
+
+const checkMode = subCommand === "check";
+
+const precheck = () => {
+  const basePodfileExists = existsSync("Podfile.lock");
+  const baseGradleLockExists = existsSync("gradle.lockfile");
+  if (!basePodfileExists || !baseGradleLockExists) {
+    console.warn(
+      "Base lockfiles do not exist at Podfile.lock or gradle.lockfile. Run `yarn native-lock` to generate them before running with --check."
+    );
+    process.exit(1);
+  }
+};
+
 const run = async () => {
+  if (checkMode) {
+    precheck();
+  }
+
   if (nonInteractive === false) {
     const result = await prompt(
       'I will run "expo prebuild --clean" to generate fresh native projects, then copy the lockfiles to the root of your repo. Should I continue? (y/N): '
@@ -50,16 +102,7 @@ const run = async () => {
     process.exit(1);
   }
 
-  if (check) {
-    const basePodfileExists = existsSync("Podfile.lock");
-    const baseGradleLockExists = existsSync("gradle.lockfile");
-    if (!basePodfileExists || !baseGradleLockExists) {
-      console.warn(
-        "Base lockfiles do not exist at Podfile.lock or gradle.lockfile. Run `yarn native-lock` to generate them before running with --check."
-      );
-      process.exit(1);
-    }
-
+  if (checkMode) {
     const basePodfileChecksum = await $`grep 'PODFILE CHECKSUM: ' Podfile.lock`;
     const baseGradleChecksum = await $`shasum gradle.lockfile`;
 
