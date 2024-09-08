@@ -20,15 +20,25 @@ Not convinced? [Read more about why this exists below](#why-this-exists).
   1. a CI check job that asserts that your native lockfiles didn't change (recommended)
   2. a postinstall step for your JS dependencies (quicker, slows down dependency installs)
 
-### Lockfile Update Approaches
+## CLI Command
 
-#### CI check
+This package has a simple command line interface:
 
-More efficient!
+run `yarn native-lock` to generate native lockfiles in the root of your project repo
 
-#### Postinstall step
+(to avoid prompts you can run it with `--non-interactive` to acknowledge the prebuild warning)
 
-Slower!
+## Lockfile Update Approaches
+
+Choose one of the following approaches to keep your native lockfiles up to date and committed to your repository.
+
+### CI check
+
+A CI-based check that runs whenever your yarn.lock changes might be the least intrusive way to ensure your native lockfiles stay in sync with any JS-based dependency changes.
+
+### Postinstall step
+
+The easiest approach to setup, but least efficient is to add `yarn native-lock` to your `postinstall` script in your package.json.
 
 ## Why this exists
 
