@@ -1,8 +1,5 @@
 #!/bin/bash
 
-yarn setup
-
-cd example
 yarn native-lock write
 write_result=$?
 

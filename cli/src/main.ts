@@ -88,7 +88,7 @@ const run = async () => {
   );
   linebreak();
 
-  await $`CI=1 ENL_GENERATING=1 yarn expo prebuild --clean`;
+  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/expo prebuild --clean`;
 
   const podfileExists = existsSync("ios/Podfile.lock");
   if (!podfileExists) {
