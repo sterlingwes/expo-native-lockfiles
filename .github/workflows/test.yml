@@ -26,15 +26,12 @@ jobs:
 
       - name: Patch expo/cli for linux
         run: |
-          cp -r example/patches ./patches
-          yarn patch-package
+          rm -rf node_modules/expo
           cd example && yarn patch-package
+          rm -rf node_modules/expo/node_modules
 
       - name: Check patch
         run: |
-          node -e 'console.log(require.resolve("@expo/cli"))'
-          cat node_modules/@expo/cli/build/src/utils/cocoapods.js
-
           cd example
           node -e 'console.log(require.resolve("@expo/cli"))'
           cat node_modules/@expo/cli/build/src/utils/cocoapods.js
