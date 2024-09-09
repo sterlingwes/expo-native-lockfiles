@@ -28,5 +28,10 @@ jobs:
         run: |
           cd example && yarn patch-package
 
+      - name: Setup cocoapods
+        run: |
+          sudo apt-get install ruby ruby-dev
+          sudo gem install cocoapods
+
       - name: Run tests
         run: yarn test
