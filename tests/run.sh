@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd example
+
 yarn native-lock write
 write_result=$?
 
