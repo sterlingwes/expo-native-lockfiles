@@ -1,15 +1,18 @@
 diff --git a/node_modules/@expo/cli/build/src/utils/cocoapods.js b/node_modules/@expo/cli/build/src/utils/cocoapods.js
-index 0776e27..5f743ad 100644
+index 0776e27..42a7d7e 100644
 --- a/node_modules/@expo/cli/build/src/utils/cocoapods.js
 +++ b/node_modules/@expo/cli/build/src/utils/cocoapods.js
-@@ -141,10 +141,10 @@ async function hasPackageJsonDependencyListChangedAsync(projectRoot) {
+@@ -140,11 +140,12 @@ async function hasPackageJsonDependencyListChangedAsync(projectRoot) {
+     return hasNewDependencies;
  }
  async function installCocoaPodsAsync(projectRoot) {
-     let step = (0, _ora.logNewSection)("Installing CocoaPods...");
+-    let step = (0, _ora.logNewSection)("Installing CocoaPods...");
 -    if (process.platform !== "darwin") {
 -        step.succeed("Skipped installing CocoaPods because operating system is not on macOS.");
 -        return false;
 -    }
++    let step = (0, _ora.logNewSection)("Installing CocoaPods!!!!!!!!!");
++    
 +    // if (process.platform !== "darwin") {
 +    //     step.succeed("Skipped installing CocoaPods because operating system is not on macOS.");
 +    //     return false;
