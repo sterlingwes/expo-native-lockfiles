@@ -29,8 +29,9 @@ jobs:
 
       - name: Check patch
         run: |
+          cd example
           node -e 'console.log(require.resolve("@expo/cli"))'
-          cat node_modules/expo/@cli/build/src/utils/cocoapods.js
+          cat node_modules/@expo/cli/build/src/utils/cocoapods.js
 
       - name: Run tests
         run: yarn test
