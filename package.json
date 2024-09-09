@@ -11,6 +11,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "expo": "~51.0.28",
+    "patch-package": "^8.0.0",
     "typescript": "^5"
   },
   "scripts": {
