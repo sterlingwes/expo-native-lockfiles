@@ -26,7 +26,7 @@ jobs:
 
       - name: Patch expo/cli for linux
         run: |
-          rm -rf node_modules/expo
+          rm -rf node_modules/expo/node_modules
           cd example && yarn patch-package
           rm -rf node_modules/expo/node_modules
 
