@@ -21,11 +21,11 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Patch expo/cli for linux
-        run: yarn patch-package
-
       - name: Setup example
         run: yarn setup
+
+      - name: Patch expo/cli for linux
+        run: cd example && yarn patch-package
 
       - name: Run tests
         run: yarn test
