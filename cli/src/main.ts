@@ -5,6 +5,7 @@ import { generateLockfile } from "pod-lockfile";
 
 import { $, prompt, linebreak, shasumHash } from "./utils";
 import { disablePodfilePrepareHook, mockXcodebuild } from "./patcher";
+import { checkLockfilesAndExit, precheck } from "./checker";
 
 let nonInteractive = false;
 if (process.argv.includes("--non-interactive") || !!process.env.CI) {
@@ -67,17 +68,6 @@ if (subCommand === "help") {
 
 const checkMode = subCommand === "check";
 
-const precheck = () => {
-  const basePodfileExists = existsSync("Podfile.lock");
-  const baseGradleLockExists = existsSync("gradle.lockfile");
-  if (!basePodfileExists || !baseGradleLockExists) {
-    console.warn(
-      "Base lockfiles do not exist at Podfile.lock or gradle.lockfile. Run `yarn native-lock` to generate them before running with --check."
-    );
-    process.exit(1);
-  }
-};
-
 const expoPrebuildCommand = "expo prebuild --clean --no-install";
 
 const run = async () => {
@@ -139,31 +129,7 @@ const run = async () => {
   }
 
   if (checkMode) {
-    const basePodfileChecksum = await $`grep 'PODFILE CHECKSUM: ' Podfile.lock`;
-    const baseGradleChecksum = await $`shasum gradle.lockfile`;
-
-    const podfileChecksum = await $`grep 'PODFILE CHECKSUM: ' ios/Podfile.lock`;
-    const gradleChecksum = await $`shasum android/app/gradle.lockfile`;
-
-    const podfileChecksumMatch = podfileChecksum === basePodfileChecksum;
-    const gradleChecksumMatch =
-      shasumHash(gradleChecksum) === shasumHash(baseGradleChecksum);
-
-    console.log("New Podfile.lock checksum:", podfileChecksum);
-    console.log("Old Podfile.lock checksum:", basePodfileChecksum);
-    console.log("New gradle.lockfile checksum:", gradleChecksum);
-    console.log("Old gradle.lockfile checksum:", baseGradleChecksum);
-
-    if (podfileChecksumMatch && gradleChecksumMatch) {
-      console.log("Checksums match, lockfiles are up to date.");
-      process.exit(0);
-    } else {
-      console.error(
-        "Checksums do not match, lockfiles are out of date. Run `yarn native-lock` to update them."
-      );
-      process.exit(1);
-    }
-    return;
+    await checkLockfilesAndExit();
   }
 
   await copyFile("ios/Podfile.lock", "Podfile.lock");
