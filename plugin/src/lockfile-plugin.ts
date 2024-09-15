@@ -83,6 +83,9 @@ const withPodsLockfile: ConfigPlugin = (config) => {
 
 const withLockfilePlugin: ConfigPlugin = (config) => {
   if (!generating) {
+    console.log(
+      `\n${pluginTag}: Lockfiles are not being generated (running in check mode).\n`
+    );
     return withGradleLockfileActivated(config);
   }
 
