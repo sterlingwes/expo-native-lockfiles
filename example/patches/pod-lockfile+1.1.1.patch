@@ -1,23 +1,30 @@
 diff --git a/node_modules/pod-lockfile/dist/main.js b/node_modules/pod-lockfile/dist/main.js
-index a088db7..3cb639b 100644
+index a088db7..7d5a980 100644
 --- a/node_modules/pod-lockfile/dist/main.js
 +++ b/node_modules/pod-lockfile/dist/main.js
-@@ -4,6 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+@@ -4,6 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
  };
  Object.defineProperty(exports, "__esModule", { value: true });
  const child_process_1 = require("child_process");
 +const exec = () => {
 +    return (...args) => {
 +        console.log(`Running: execSync with ${args.join(" ")}`)
-+        const result = (0, child_process_1.execSync)(...args).toString()
-+        console.log('exec result:', result)
-+        return result
++        try {
++            const result = (0, child_process_1.execSync)(...args).toString()
++            console.log('exec result:', result)
++            return result
++        } catch (e) {
++            console.log('exec error:', e)
++            console.log('exec stdout:', e.stdout.toString())
++            console.log('exec stderr:', e.stderr.toString())
++            throw e
++        }
 +    }
 +}
  const fs_1 = require("fs");
  const path_1 = require("path");
  const package_json_1 = __importDefault(require("../package.json"));
-@@ -56,7 +64,7 @@ if (flags["version"]) {
+@@ -56,7 +71,7 @@ if (flags["version"]) {
  }
  const podVersion = flags["pod-version"];
  const requiresPodVersion = typeof podVersion === "string";
@@ -26,7 +33,7 @@ index a088db7..3cb639b 100644
  const podInstalled = installedGems.split(/\r?\n/).find((gem) => {
      return gem.trim().startsWith("cocoapods (");
  });
-@@ -69,7 +77,7 @@ if (!podInstalled) {
+@@ -69,7 +84,7 @@ if (!podInstalled) {
      console.log(requiresPodVersion
          ? `Installing cocoapods w/ required version ${podVersion}`
          : "Installing cocoapods");
@@ -35,7 +42,7 @@ index a088db7..3cb639b 100644
          ? `gem install cocoapods -v ${podVersion}`
          : "gem install cocoapods");
  }
-@@ -78,7 +86,7 @@ const pluginInstalled = installedGems.split(/\r?\n/).find((gem) => {
+@@ -78,7 +93,7 @@ const pluginInstalled = installedGems.split(/\r?\n/).find((gem) => {
  });
  if (!pluginInstalled) {
      console.log("Installing cocoapods-lockfile plugin");
@@ -44,7 +51,7 @@ index a088db7..3cb639b 100644
  }
  const path = (0, path_1.resolve)(flags["project"] ?? process.cwd());
  const podfileExists = (0, fs_1.existsSync)((0, path_1.resolve)(path, "Podfile"));
-@@ -88,7 +96,7 @@ if (!podfileExists) {
+@@ -88,7 +103,7 @@ if (!podfileExists) {
  }
  console.log("Generating lockfile for project");
  try {
