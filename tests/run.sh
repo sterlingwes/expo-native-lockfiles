@@ -4,7 +4,8 @@ cd test-example
 
 echo "Writing test lockfile ==============================="
 
-le node_modules/react-native
+ls node_modules/react-native
+yarn expo prebuild --clean -p ios
 yarn pod-lockfile --debug --project ./ios
 
 yarn native-lock --debug write
