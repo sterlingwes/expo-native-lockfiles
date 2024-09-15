@@ -1,9 +1,10 @@
+import { resolve } from "path";
 import { existsSync } from "fs";
 import { copyFile } from "fs/promises";
 import { generateLockfile } from "pod-lockfile";
 
 import { $, prompt, linebreak, shasumHash } from "./utils";
-import { mockXcodebuild } from "./patcher";
+import { disablePodfilePrepareHook, mockXcodebuild } from "./patcher";
 
 let nonInteractive = false;
 if (process.argv.includes("--non-interactive") || !!process.env.CI) {
@@ -111,9 +112,22 @@ const run = async () => {
     await unmockXcodebuild();
   }
 
-  generateLockfile({ project: "./ios", debug });
+  const basePath = "./ios";
+  const podfilePath = resolve(basePath, "Podfile");
 
-  const podfileExists = existsSync("ios/Podfile.lock");
+  const reEnablePodfileHook = await disablePodfilePrepareHook({
+    debug,
+    podfilePath,
+  });
+
+  try {
+    generateLockfile({ project: basePath, debug });
+  } finally {
+    await reEnablePodfileHook();
+  }
+
+  const lockfilePath = resolve(basePath, "Podfile.lock");
+  const podfileExists = existsSync(lockfilePath);
   if (!podfileExists) {
     console.warn(
       "Podfile.lock does not exist at ios/Podfile.lock. Something went wrong with prebuild & lockfile generate, aborting."

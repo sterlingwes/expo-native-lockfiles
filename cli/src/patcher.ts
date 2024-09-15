@@ -7,6 +7,47 @@ const glogPodspecPath =
   "node_modules/react-native/third-party-podspecs/glog.podspec";
 
 /**
+ * the prepare_react_native_project! hook in Podfiles is not required
+ * to generate the lockfile and causes issues with non-darwin CI environments
+ */
+export const disablePodfilePrepareHook = async ({
+  debug,
+  podfilePath,
+}: {
+  debug?: boolean;
+  podfilePath: string;
+}) => {
+  if (!existsSync(podfilePath)) {
+    throw new Error(
+      `disablePodfilePrepareHook: Podfile not found at ${podfilePath}`
+    );
+  }
+
+  if (debug) {
+    console.log(
+      `disablePodfilePrepareHook: disabling prepare_react_native_project! hook in ${podfilePath}`
+    );
+  }
+
+  const podfileBackupPath = `${podHelperPath}.bak`;
+  await copyFile(podfilePath, podfileBackupPath);
+
+  await $`sed "s/prepare_react_native_project\!//g" ${podfilePath}`;
+
+  const reEnable = async () => {
+    if (debug) {
+      console.log(
+        `disablePodfilePrepareHook: re-enabling prepare_react_native_project! hook in ${podfilePath} from ${podfileBackupPath}`
+      );
+    }
+
+    await $`mv ${podfileBackupPath} ${podfilePath}`;
+  };
+
+  return reEnable;
+};
+
+/**
  * there are some hooks in react native Podfiles that call to
  * xcodebuild, and this won't be available in all environments,
  * like in CI on linux
