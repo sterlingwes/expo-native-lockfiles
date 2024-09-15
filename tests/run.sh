@@ -4,6 +4,9 @@ cd test-example
 
 echo "Writing test lockfile ==============================="
 
+le node_modules/react-native
+yarn pod-lockfile --debug --project ./ios
+
 yarn native-lock --debug write
 write_result=$?
 
