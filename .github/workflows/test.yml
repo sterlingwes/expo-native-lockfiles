@@ -39,7 +39,7 @@ jobs:
 
       - name: Install native dependency
         working-directory: test-example
-        run: yarn expo install expo-file-system
+        run: yarn expo install react-native-mmkv
 
       - name: Check lockfile after native change
         working-directory: test-example
@@ -50,11 +50,6 @@ jobs:
 
           if [ $check_result -ne 1 ]; then
             echo "Expected lockfile check to fail, but it passed, received:"
-            echo "==== podfile.lock ===="
-            echo $(cat ios/Podfile.lock)
-            echo "==== gradle.lockfile ===="
-            echo $(cat android/gradle.lockfile)
-            echo "==== end ===="
             exit 1
           fi
 
