@@ -7,6 +7,8 @@ echo "Writing test lockfile ==============================="
 ls node_modules/react-native
 xchelper="node_modules/react-native/scripts/cocoapods/helpers.rb"
 sed "s/xcodebuild -version/echo Xcode 16.0/g" "$xchelper" > "$xchelper"
+ls node_modules/react-native/scripts/cocoapods/
+echo "$xchelper"
 cat "$xchelper"
 yarn expo prebuild --clean -p ios
 podfile=$(sed "s/prepare_react_native_project\!//g" ios/Podfile)
