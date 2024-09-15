@@ -71,3 +71,4 @@ Things to iron out:
 - [ ] allow for running for a specific platform
 - [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
 - [ ] figure out how to speed up the gradle lockfile write (--offline w/ cache?)
+- [ ] add a simple readme example for CI check config
