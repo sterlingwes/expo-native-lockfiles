@@ -17,9 +17,7 @@
     "build": "yarn build-cli && yarn build-plugin",
     "build-cli": "cd cli && tsc",
     "build-plugin": "cd plugin && tsc",
-    "example-install": "yarn pack && cd example && yarn add --cache-folder .yarn ../expo-native-lockfiles-*.tgz",
     "clean": "rm -f expo-native-lockfiles-*.tgz && cd example && rm -rf node_modules .yarn gradle.lockfile Podfile.lock",
-    "setup": "yarn clean && yarn build && yarn example-install",
     "test": "./tests/setup.sh && CI=1 ./tests/run.sh",
     "prepublishOnly": "yarn build"
   },
