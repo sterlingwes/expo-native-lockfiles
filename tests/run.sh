@@ -4,26 +4,26 @@ cd test-example
 
 echo "Writing test lockfile ==============================="
 
-ls node_modules/react-native
-xchelper="node_modules/react-native/scripts/cocoapods/helpers.rb"
-sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$xchelper")
-echo "sedval $sedval"
-echo "$sedval" > "$xchelper"
-glogspec="node_modules/react-native/third-party-podspecs/glog.podspec"
-sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$glogspec")
-echo "sedval $sedval"
-echo "$sedval" > "$glogspec"
-yarn expo prebuild --clean -p ios
-podfile=$(sed "s/prepare_react_native_project\!//g" ios/Podfile)
-echo "puts File.join(File.dirname(\`node --print \"require.resolve('react-native/package.json')\"\`), \"scripts/react_native_pods\")" > ios/Podfile
-echo "" >> ios/Podfile
-echo "" >> ios/Podfile
-echo "$podfile" >> ios/Podfile
-echo $(cat ios/Podfile)
-echo "===="
-ls node_modules/react-native/scripts/
-echo "===="
-yarn pod-lockfile --debug --project ./ios
+# ls node_modules/react-native
+# xchelper="node_modules/react-native/scripts/cocoapods/helpers.rb"
+# sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$xchelper")
+# echo "sedval $sedval"
+# echo "$sedval" > "$xchelper"
+# glogspec="node_modules/react-native/third-party-podspecs/glog.podspec"
+# sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$glogspec")
+# echo "sedval $sedval"
+# echo "$sedval" > "$glogspec"
+# yarn expo prebuild --clean -p ios
+# podfile=$(sed "s/prepare_react_native_project\!//g" ios/Podfile)
+# echo "puts File.join(File.dirname(\`node --print \"require.resolve('react-native/package.json')\"\`), \"scripts/react_native_pods\")" > ios/Podfile
+# echo "" >> ios/Podfile
+# echo "" >> ios/Podfile
+# echo "$podfile" >> ios/Podfile
+# echo $(cat ios/Podfile)
+# echo "===="
+# ls node_modules/react-native/scripts/
+# echo "===="
+# yarn pod-lockfile --debug --project ./ios
 
 yarn native-lock --debug write
 write_result=$?

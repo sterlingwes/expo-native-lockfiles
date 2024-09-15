@@ -1,0 +1,58 @@
+import { existsSync } from "fs";
+import { copyFile } from "fs/promises";
+import { $ } from "./utils";
+
+const podHelperPath = "node_modules/react-native/scripts/cocoapods/helpers.rb";
+const glogPodspecPath =
+  "node_modules/react-native/third-party-podspecs/glog.podspec";
+
+/**
+ * there are some hooks in react native Podfiles that call to
+ * xcodebuild, and this won't be available in all environments,
+ * like in CI on linux
+ */
+export const mockXcodebuild = async ({
+  debug,
+  xcVersion,
+}: {
+  debug?: boolean;
+  xcVersion: string;
+}) => {
+  // verify patch paths exist before mocking
+  const paths = [podHelperPath, glogPodspecPath];
+  for (const path of paths) {
+    if (!existsSync(path)) {
+      throw new Error(
+        `mockXcodebuild: path ${path} does not exist. This may mean that expo-native-lockfiles needs to be updated to address a react-native reorganization.`
+      );
+    }
+  }
+
+  if (debug) {
+    console.log(
+      `mockXcodebuild: patching xcodebuild -version calls in ${podHelperPath} and ${glogPodspecPath} to Xcode ${xcVersion}`
+    );
+  }
+
+  // mv originals
+  const podHelperBackupPath = `${podHelperPath}.bak`;
+  await copyFile(podHelperPath, podHelperBackupPath);
+  const glogPodspecBackupPath = `${glogPodspecPath}.bak`;
+  await copyFile(glogPodspecPath, glogPodspecBackupPath);
+
+  // patch xc versions
+  await $`sed "s/xcodebuild -version/echo Xcode ${xcVersion}/g" ${podHelperPath}`;
+  await $`sed "s/xcodebuild -version/echo Xcode ${xcVersion}/g" ${glogPodspecPath}`;
+
+  const unmock = async () => {
+    if (debug) {
+      console.log(
+        `mockXcodebuild: restoring original xcodebuild -version calls in ${podHelperPath} and ${glogPodspecPath} from ${podHelperBackupPath} and ${glogPodspecBackupPath}`
+      );
+    }
+    await $`mv ${podHelperBackupPath} ${podHelperPath}`;
+    await $`mv ${glogPodspecBackupPath} ${glogPodspecPath}`;
+  };
+
+  return unmock;
+};

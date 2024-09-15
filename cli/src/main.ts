@@ -3,6 +3,7 @@ import { copyFile } from "fs/promises";
 import { generateLockfile } from "pod-lockfile";
 
 import { $, prompt, linebreak, shasumHash } from "./utils";
+import { mockXcodebuild } from "./patcher";
 
 let nonInteractive = false;
 if (process.argv.includes("--non-interactive") || !!process.env.CI) {
@@ -13,6 +14,8 @@ let debug = false;
 if (process.argv.includes("--debug")) {
   debug = true;
 }
+
+const xcVersion = process.env.XCVERSION || "15.4";
 
 const cliCmdIndex = process.argv.findIndex((arg) =>
   arg.includes("native-lock")
@@ -97,7 +100,16 @@ const run = async () => {
   );
   linebreak();
 
-  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+  const unmockXcodebuild = await mockXcodebuild({ debug, xcVersion });
+
+  try {
+    await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+  } catch (e) {
+    console.log("Error running prebuild command, aborting.");
+    throw e;
+  } finally {
+    await unmockXcodebuild();
+  }
 
   generateLockfile({ project: "./ios", debug });
 
