@@ -49,7 +49,12 @@ jobs:
           check_result=$?
 
           if [ $check_result -ne 1 ]; then
-            echo "Expected lockfile check to fail, but it passed"
+            echo "Expected lockfile check to fail, but it passed, received:"
+            echo "==== podfile.lock ===="
+            echo $(cat ios/Podfile.lock)
+            echo "==== gradle.lockfile ===="
+            echo $(cat android/gradle.lockfile)
+            echo "==== end ===="
             exit 1
           fi
 
