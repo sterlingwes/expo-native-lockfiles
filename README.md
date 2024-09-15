@@ -69,3 +69,4 @@ Things to iron out:
 - [ ] make xcode version (and others?) clearer and configurable
 - [ ] allow for running for a specific platform
 - [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
+- [ ] figure out how to speed up the gradle lockfile write (--offline w/ cache?)
