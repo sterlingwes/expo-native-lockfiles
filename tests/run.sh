@@ -11,7 +11,9 @@ echo "puts File.join(File.dirname(\`node --print \"require.resolve('react-native
 echo "" >> ios/Podfile
 echo "" >> ios/Podfile
 echo "$podfile" >> ios/Podfile
-cat ios/Podfile
+echo "===="
+ls node_modules/react-native/scripts/
+echo "===="
 yarn pod-lockfile --debug --project ./ios
 
 yarn native-lock --debug write
