@@ -3844,6 +3844,11 @@ pngjs@^3.3.0:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
+pod-lockfile@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/pod-lockfile/-/pod-lockfile-1.0.2.tgz#5f39d27d20e2e9c099e9cdeb5d738d8fd7fefe72"
+  integrity sha512-KV0Z7BZFhL8VqXh2CmQbuSa4h4nJn1fQJMe0faB9L01SvbAh0/uPSWERXtHcktgNqNuVDzNl8mJvrv4iDJ4adw==
+
 possible-typed-array-names@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/possible-typed-array-names/-/possible-typed-array-names-1.0.0.tgz#89bb63c6fada2c3e90adc4a647beeeb39cc7bf8f"

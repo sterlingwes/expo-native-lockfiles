@@ -21,5 +21,8 @@
     "clean": "rm -f expo-native-lockfiles-*.tgz && cd example && rm -rf node_modules .yarn gradle.lockfile Podfile.lock",
     "setup": "yarn clean && yarn build && yarn example-install",
     "test": "./tests/run.sh"
+  },
+  "dependencies": {
+    "pod-lockfile": "^1.0.2"
   }
 }

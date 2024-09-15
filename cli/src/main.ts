@@ -67,6 +67,8 @@ const precheck = () => {
   }
 };
 
+const expoPrebuildCommand = "expo prebuild --clean --no-install";
+
 const run = async () => {
   if (checkMode) {
     precheck();
@@ -84,16 +86,18 @@ const run = async () => {
 
   linebreak();
   console.log(
-    'Running "expo prebuild --clean" to generate fresh native projects, along with a Gradle sync, this may take a few minutes...'
+    `Running "${expoPrebuildCommand}" to generate fresh native projects, along with a Gradle sync, this may take a few minutes...`
   );
   linebreak();
 
-  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/expo prebuild --clean`;
+  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+
+  await $`cd ios && yarn pod-lockfile`;
 
   const podfileExists = existsSync("ios/Podfile.lock");
   if (!podfileExists) {
     console.warn(
-      "Podfile.lock does not exist at ios/Podfile.lock. Something went wrong with expo prebuild, aborting."
+      "Podfile.lock does not exist at ios/Podfile.lock. Something went wrong with prebuild & lockfile generate, aborting."
     );
     process.exit(1);
   }

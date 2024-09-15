@@ -1,8 +1,14 @@
 import { exec } from "child_process";
 import { createInterface } from "readline";
 
-export const $ = (cmd: TemplateStringsArray) => {
-  const cmdStr = cmd.join(" ");
+const coerceValue = (value: any) =>
+  typeof value === "string" ? value : JSON.stringify(value);
+
+const interpolate = (strings: TemplateStringsArray, ...values: any[]) =>
+  strings.reduce((acc, str, i) => acc + str + coerceValue(values[i]), "");
+
+export const $ = (cmd: TemplateStringsArray, ...args: any[]) => {
+  const cmdStr = args.length ? interpolate(cmd, ...args) : cmd.join(" ");
   console.log(`exec: ${cmdStr}`);
   return new Promise((resolve, reject) => {
     exec(cmdStr, (err, stdout, stderr) => {
