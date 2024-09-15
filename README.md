@@ -22,9 +22,19 @@ Not convinced? [Read more about why this exists below](#why-this-exists).
 
 ## CLI Command
 
-This package has a simple command line interface:
+```
+expo-native-lockfiles CLI
+Usage: yarn native-lock [subcommand]
 
-run `yarn native-lock write` to generate native lockfiles in the root of your project repo and `yarn native-lock check` to compare. Run with `help` for more options.
+Subcommands:
+  check: Check if lockfiles after prebuild are the same as those in the root of the repo.
+  write: Write the lockfiles generated after prebuild to the root of the repo.
+  help: Print this help message.
+
+Options:
+  --non-interactive: Skip interactive prompts (assumes 'yes').
+  --debug: Print debug information.
+```
 
 ## Lockfile Update Approaches
 
@@ -51,3 +61,11 @@ You may notice the occasional drift in native dependencies with Expo's Managed W
 The above may be desirable if you're OK with the risk that the underlying dependency does not use semantic versioning correctly and maintains backwards compatibility. Even if the version bump is not a breaking change it may have undesirable or unexpected runtime characteristics. This risk increases if the maintainer of the JS dependency is not also the maintainer of the native dependency it uses.
 
 It can also be good to have visibility into the state of native dependencies for security scanning or supply chain management (SAST scans). With the recommended approach of ignoring the native project folders under CNG, you have no visibility into what dependencies your yarn lockfile-defined dependencies are pulling in.
+
+## Roadmap to v1
+
+Things to iron out:
+
+- [ ] make xcode version (and others?) clearer and configurable
+- [ ] allow for running for a specific platform
+- [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
