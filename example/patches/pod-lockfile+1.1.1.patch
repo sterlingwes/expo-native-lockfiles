@@ -8,7 +8,7 @@ index a088db7..7d5a980 100644
  const child_process_1 = require("child_process");
 +const exec = () => {
 +    return (...args) => {
-+        console.log(`Running: execSync with ${args.join(" ")}`)
++        console.log(`Running w/ try/catch: execSync with ${args.join(" ")}`)
 +        try {
 +            const result = (0, child_process_1.execSync)(...args).toString()
 +            console.log('exec result:', result)
