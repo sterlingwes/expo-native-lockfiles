@@ -44,7 +44,8 @@ export const checkLockfilesAndExit = async ({
   const podfileChecksum = await getPodLockfileStableChecksum(project);
   const gradleChecksum = await $`shasum android/app/gradle.lockfile`;
 
-  const podfileChecksumMatch = podfileChecksum === basePodfileChecksum;
+  const podfileChecksumMatch =
+    shasumHash(podfileChecksum) === shasumHash(basePodfileChecksum);
   const gradleChecksumMatch =
     shasumHash(gradleChecksum) === shasumHash(baseGradleChecksum);
 
