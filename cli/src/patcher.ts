@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
 import { copyFile } from "fs/promises";
-import { $ } from "./utils";
+import { $, replaceInFile } from "./utils";
 
 const podHelperPath = "node_modules/react-native/scripts/cocoapods/helpers.rb";
 const glogPodspecPath =
@@ -32,7 +32,11 @@ export const disablePodfilePrepareHook = async ({
   const podfileBackupPath = `${podHelperPath}.bak`;
   await copyFile(podfilePath, podfileBackupPath);
 
-  await $`sed "s/prepare_react_native_project\!//g" ${podfilePath}`;
+  await replaceInFile({
+    path: podfilePath,
+    search: "prepare_react_native_project!",
+    replace: "",
+  });
 
   const reEnable = async () => {
     if (debug) {
@@ -81,9 +85,20 @@ export const mockXcodebuild = async ({
   const glogPodspecBackupPath = `${glogPodspecPath}.bak`;
   await copyFile(glogPodspecPath, glogPodspecBackupPath);
 
+  const baseReplacement = {
+    search: "xcodebuild -version",
+    replace: `echo Xcode ${xcVersion}`,
+  };
+
   // patch xc versions
-  await $`sed "s/xcodebuild -version/echo Xcode ${xcVersion}/g" ${podHelperPath}`;
-  await $`sed "s/xcodebuild -version/echo Xcode ${xcVersion}/g" ${glogPodspecPath}`;
+  await replaceInFile({
+    ...baseReplacement,
+    path: podHelperPath,
+  });
+  await replaceInFile({
+    ...baseReplacement,
+    path: glogPodspecPath,
+  });
 
   const unmock = async () => {
     if (debug) {

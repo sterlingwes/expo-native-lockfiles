@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import { exec } from "child_process";
 import { createInterface } from "readline";
 
@@ -39,4 +40,18 @@ export const shasumHash = (shasumOutput: unknown) => {
   }
   // in the form of '<checksum>  gradle.lockfile'
   return shasumOutput.trim().split(/\s+/)[0];
+};
+
+export const replaceInFile = async ({
+  path,
+  search,
+  replace,
+}: {
+  path: string;
+  search: string;
+  replace: string;
+}) => {
+  const contents = await fs.readFile(path, "utf8");
+  const updatedContents = contents.replace(search, replace);
+  await fs.writeFile(path, updatedContents);
 };
