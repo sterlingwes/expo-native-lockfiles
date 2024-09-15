@@ -91,7 +91,11 @@ const run = async () => {
   );
   linebreak();
 
-  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+  if (checkMode) {
+    await $`CI=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+  } else {
+    await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
+  }
 
   const basePath = "./ios";
   const podfilePath = resolve(basePath, "Podfile");
