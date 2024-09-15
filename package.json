@@ -22,6 +22,6 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "pod-lockfile": "^1.2.0"
+    "pod-lockfile": "^1.2.1"
   }
 }

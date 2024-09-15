@@ -9,6 +9,11 @@ if (process.argv.includes("--non-interactive") || !!process.env.CI) {
   nonInteractive = true;
 }
 
+let debug = false;
+if (process.argv.includes("--debug")) {
+  debug = true;
+}
+
 const cliCmdIndex = process.argv.findIndex((arg) =>
   arg.includes("native-lock")
 );
@@ -34,6 +39,7 @@ Subcommands:
 
 Options:
   --non-interactive: Skip interactive prompts (assumes 'yes').
+  --debug: Print debug information.
 
 `;
   console.log(help);
@@ -93,7 +99,7 @@ const run = async () => {
 
   await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
 
-  generateLockfile({ project: "./ios" });
+  generateLockfile({ project: "./ios", debug });
 
   const podfileExists = existsSync("ios/Podfile.lock");
   if (!podfileExists) {
