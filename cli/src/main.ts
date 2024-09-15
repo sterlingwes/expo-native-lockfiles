@@ -1,5 +1,6 @@
 import { existsSync } from "fs";
 import { copyFile } from "fs/promises";
+import { generateLockfile } from "pod-lockfile";
 
 import { $, prompt, linebreak, shasumHash } from "./utils";
 
@@ -92,14 +93,7 @@ const run = async () => {
 
   await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
 
-  try {
-    const result = await $`yarn pod-lockfile --project ./ios`;
-    console.log(result?.toString());
-  } catch (e: any) {
-    console.log("Error running pod-lockfile", e);
-    console.log(e.stdout?.toString());
-    console.log(e.stderr?.toString());
-  }
+  generateLockfile({ project: "./ios" });
 
   const podfileExists = existsSync("ios/Podfile.lock");
   if (!podfileExists) {
