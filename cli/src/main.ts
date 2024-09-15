@@ -133,7 +133,7 @@ const run = async () => {
   }
 
   if (checkMode) {
-    await checkLockfilesAndExit({ project: basePath });
+    await checkLockfilesAndExit({ debug, project: basePath });
   }
 
   await copyFile("ios/Podfile.lock", "Podfile.lock");

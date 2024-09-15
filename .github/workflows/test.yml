@@ -45,7 +45,7 @@ jobs:
         working-directory: test-example
         run: |
           set -e
-          yarn native-lock check
+          yarn native-lock --debug check
           check_result=$?
 
           if [ $check_result -ne 1 ]; then
