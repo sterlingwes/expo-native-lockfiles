@@ -101,20 +101,12 @@ const run = async () => {
   );
   linebreak();
 
-  const unmockXcodebuild = await mockXcodebuild({ debug, xcVersion });
-
-  try {
-    await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
-  } catch (e) {
-    console.log("Error running prebuild command, aborting.");
-    throw e;
-  } finally {
-    await unmockXcodebuild();
-  }
+  await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
 
   const basePath = "./ios";
   const podfilePath = resolve(basePath, "Podfile");
 
+  const unmockXcodebuild = await mockXcodebuild({ debug, xcVersion });
   const reEnablePodfileHook = await disablePodfilePrepareHook({
     debug,
     podfilePath,
@@ -124,6 +116,7 @@ const run = async () => {
     generateLockfile({ project: basePath, debug });
   } finally {
     await reEnablePodfileHook();
+    await unmockXcodebuild();
   }
 
   const lockfilePath = resolve(basePath, "Podfile.lock");
