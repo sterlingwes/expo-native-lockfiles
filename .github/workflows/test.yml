@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -23,15 +25,6 @@ jobs:
 
       - name: Setup example
         run: yarn setup
-
-      - name: Patch expo/cli for linux
-        run: |
-          cd example && yarn patch-package
-
-      - name: Setup cocoapods
-        run: |
-          sudo apt-get install ruby ruby-dev
-          sudo gem install cocoapods
 
       - name: Run tests
         run: yarn test
