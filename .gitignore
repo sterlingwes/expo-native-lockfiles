@@ -139,3 +139,6 @@ example/gradle.lockfile
 # build output
 build/
 .yarn/
+
+# tests
+/test-example

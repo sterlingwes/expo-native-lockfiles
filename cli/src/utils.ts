@@ -5,7 +5,7 @@ const coerceValue = (value: any) =>
   typeof value === "string" ? value : JSON.stringify(value);
 
 const interpolate = (strings: TemplateStringsArray, ...values: any[]) =>
-  strings.reduce((acc, str, i) => acc + str + coerceValue(values[i]), "");
+  strings.reduce((acc, str, i) => acc + str + coerceValue(values[i] ?? ""), "");
 
 export const $ = (cmd: TemplateStringsArray, ...args: any[]) => {
   const cmdStr = args.length ? interpolate(cmd, ...args) : cmd.join(" ");

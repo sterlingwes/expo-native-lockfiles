@@ -36,7 +36,7 @@ A CI-based check that runs whenever your yarn.lock changes might be the least in
 
 ### Postinstall step
 
-The easiest approach to setup, but least efficient is to add `yarn native-lock` to your `postinstall` script in your package.json.
+The easiest approach to setup, but least efficient is to add `yarn native-lock write` to your `postinstall` script in your package.json.
 
 ## Why this exists
 

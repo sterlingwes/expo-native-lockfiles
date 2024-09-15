@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cd example
+cd test-example
+
+echo "Writing test lockfile ==============================="
 
 yarn native-lock write
 write_result=$?
@@ -9,6 +11,8 @@ if [ $write_result -ne 0 ]; then
   echo "Failed to write native lock files"
   exit 1
 fi
+
+echo "Checking lockfile ==============================="
 
 yarn native-lock check
 check_result=$?

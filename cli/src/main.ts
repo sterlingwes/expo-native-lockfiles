@@ -92,7 +92,7 @@ const run = async () => {
 
   await $`CI=1 ENL_GENERATING=1 ./node_modules/.bin/${expoPrebuildCommand}`;
 
-  await $`cd ios && yarn pod-lockfile`;
+  await $`yarn pod-lockfile --project ./ios`;
 
   const podfileExists = existsSync("ios/Podfile.lock");
   if (!podfileExists) {
