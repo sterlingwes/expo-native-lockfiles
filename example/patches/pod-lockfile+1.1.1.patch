@@ -1,5 +1,5 @@
 diff --git a/node_modules/pod-lockfile/dist/main.js b/node_modules/pod-lockfile/dist/main.js
-index a088db7..43dda6a 100644
+index a088db7..824d6bd 100644
 --- a/node_modules/pod-lockfile/dist/main.js
 +++ b/node_modules/pod-lockfile/dist/main.js
 @@ -4,12 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -31,39 +31,92 @@ index a088db7..43dda6a 100644
    
      Options:
        --project: The path to the project directory holding a Podfile, defaults to current working directory
-@@ -56,7 +71,7 @@ if (flags["version"]) {
+@@ -54,44 +69,49 @@ if (flags["version"]) {
+     console.log(package_json_1.default.version);
+     process.exit(0);
  }
- const podVersion = flags["pod-version"];
- const requiresPodVersion = typeof podVersion === "string";
+-const podVersion = flags["pod-version"];
+-const requiresPodVersion = typeof podVersion === "string";
 -const installedGems = (0, child_process_1.execSync)("gem list --local").toString();
-+const installedGems = exec()("gem list --local").toString();
- const podInstalled = installedGems.split(/\r?\n/).find((gem) => {
-     return gem.trim().startsWith("cocoapods (");
- });
-@@ -69,7 +84,7 @@ if (!podInstalled) {
-     console.log(requiresPodVersion
-         ? `Installing cocoapods w/ required version ${podVersion}`
-         : "Installing cocoapods");
+-const podInstalled = installedGems.split(/\r?\n/).find((gem) => {
+-    return gem.trim().startsWith("cocoapods (");
+-});
+-if (podInstalled &&
+-    requiresPodVersion &&
+-    podInstalled.includes(`(${podVersion.trim()}`) === false) {
+-    throw new Error(`Pod version mismatch, expected ${podVersion}, got:\n\t${podInstalled}\n`);
+-}
+-if (!podInstalled) {
+-    console.log(requiresPodVersion
+-        ? `Installing cocoapods w/ required version ${podVersion}`
+-        : "Installing cocoapods");
 -    (0, child_process_1.execSync)(requiresPodVersion
-+    exec()(requiresPodVersion
-         ? `gem install cocoapods -v ${podVersion}`
-         : "gem install cocoapods");
- }
-@@ -78,7 +93,7 @@ const pluginInstalled = installedGems.split(/\r?\n/).find((gem) => {
- });
- if (!pluginInstalled) {
-     console.log("Installing cocoapods-lockfile plugin");
+-        ? `gem install cocoapods -v ${podVersion}`
+-        : "gem install cocoapods");
+-}
+-const pluginInstalled = installedGems.split(/\r?\n/).find((gem) => {
+-    return gem.trim().startsWith("cocoapods-lockfile (");
+-});
+-if (!pluginInstalled) {
+-    console.log("Installing cocoapods-lockfile plugin");
 -    (0, child_process_1.execSync)("gem install cocoapods-lockfile");
-+    exec()("gem install cocoapods-lockfile");
- }
- const path = (0, path_1.resolve)(flags["project"] ?? process.cwd());
- const podfileExists = (0, fs_1.existsSync)((0, path_1.resolve)(path, "Podfile"));
-@@ -88,7 +103,7 @@ if (!podfileExists) {
- }
- console.log("Generating lockfile for project");
+-}
+-const path = (0, path_1.resolve)(flags["project"] ?? process.cwd());
+-const podfileExists = (0, fs_1.existsSync)((0, path_1.resolve)(path, "Podfile"));
+-if (!podfileExists) {
+-    console.log(`No Podfile could be found in ${path}, aborting.`);
+-    process.exit(1);
+-}
+-console.log("Generating lockfile for project");
  try {
 -    (0, child_process_1.execSync)("pod install --lockfile-only", { cwd: path });
-+    exec()("pod install --lockfile-only", { cwd: path });
-     console.log("\nPodfile.lock generated successfully! No dependencies were installed in the making of this lockfile.\n");
+-    console.log("\nPodfile.lock generated successfully! No dependencies were installed in the making of this lockfile.\n");
+-}
+-catch (e) {
+-    console.log(e);
+-    process.exit(1);
++
++    const podVersion = flags["pod-version"];
++    const requiresPodVersion = typeof podVersion === "string";
++    const installedGems = exec()("gem list --local").toString();
++    const podInstalled = installedGems.split(/\r?\n/).find((gem) => {
++        return gem.trim().startsWith("cocoapods (");
++    });
++    if (podInstalled &&
++        requiresPodVersion &&
++        podInstalled.includes(`(${podVersion.trim()}`) === false) {
++        throw new Error(`Pod version mismatch, expected ${podVersion}, got:\n\t${podInstalled}\n`);
++    }
++    if (!podInstalled) {
++        console.log(requiresPodVersion
++            ? `Installing cocoapods w/ required version ${podVersion}`
++            : "Installing cocoapods");
++        exec()(requiresPodVersion
++            ? `gem install cocoapods -v ${podVersion}`
++            : "gem install cocoapods");
++    }
++    const pluginInstalled = installedGems.split(/\r?\n/).find((gem) => {
++        return gem.trim().startsWith("cocoapods-lockfile (");
++    });
++    if (!pluginInstalled) {
++        console.log("Installing cocoapods-lockfile plugin");
++        exec()("gem install cocoapods-lockfile");
++    }
++    const path = (0, path_1.resolve)(flags["project"] ?? process.cwd());
++    const podfileExists = (0, fs_1.existsSync)((0, path_1.resolve)(path, "Podfile"));
++    if (!podfileExists) {
++        console.log(`No Podfile could be found in ${path}, aborting.`);
++        process.exit(1);
++    }
++    console.log("Generating lockfile for project");
++    try {
++        exec()("pod install --lockfile-only", { cwd: path });
++        console.log("\nPodfile.lock generated successfully! No dependencies were installed in the making of this lockfile.\n");
++    }
++    catch (e) {
++        console.log(e);
++        process.exit(1);
++    }
++} catch (e) {
++    console.log('pod-lockfile error:', e)
  }
- catch (e) {
