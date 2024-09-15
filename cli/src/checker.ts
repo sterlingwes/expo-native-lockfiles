@@ -1,4 +1,6 @@
+import { resolve } from "path";
 import { existsSync } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { $, shasumHash } from "./utils";
 
 export const precheck = () => {
@@ -12,11 +14,34 @@ export const precheck = () => {
   }
 };
 
-export const checkLockfilesAndExit = async () => {
-  const basePodfileChecksum = await $`grep 'PODFILE CHECKSUM: ' Podfile.lock`;
+/**
+ * since the podfile itself includes checksums for the dependency specs,
+ * and those can be unstable, we only checksum the top section of the file
+ */
+const getPodLockfileStableChecksum = async (project: string = ".") => {
+  const lockfilePath = resolve(project, "Podfile.lock");
+  const podfile = await readFile(lockfilePath, "utf-8");
+  const topSection = podfile.split(/SPEC CHECKSUMS:/)[0];
+  if (typeof topSection !== "string") {
+    throw new Error("Could not extract top section of Podfile for checksum");
+  }
+
+  const tmpPath = resolve(project, "Podfile.lock.tmp");
+  await writeFile(tmpPath, topSection);
+  const checksum = await $`shasum ${tmpPath}`;
+  await $`rm ${tmpPath}`;
+  return checksum;
+};
+
+export const checkLockfilesAndExit = async ({
+  project,
+}: {
+  project: string;
+}) => {
+  const basePodfileChecksum = await getPodLockfileStableChecksum();
   const baseGradleChecksum = await $`shasum gradle.lockfile`;
 
-  const podfileChecksum = await $`grep 'PODFILE CHECKSUM: ' ios/Podfile.lock`;
+  const podfileChecksum = await getPodLockfileStableChecksum(project);
   const gradleChecksum = await $`shasum android/app/gradle.lockfile`;
 
   const podfileChecksumMatch = podfileChecksum === basePodfileChecksum;
