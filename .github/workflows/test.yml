@@ -27,12 +27,39 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Run tests
+      - name: Run baseline test
         run: yarn test
 
       - uses: actions/upload-artifact@v4
         with:
           name: generated-lockfiles
+          path: |
+            test-example/gradle.lockfile
+            test-example/Podfile.lock
+
+      - name: Install native dependency
+        working-directory: test-example
+        run: yarn expo install expo-file-system
+
+      - name: Check lockfile after native change
+        working-directory: test-example
+        run: |
+          set -e
+          yarn native-lock check
+          check_result=$?
+
+          if [ $check_result -ne 1 ]; then
+            echo "Expected lockfile check to fail, but it passed"
+            exit 1
+          fi
+
+      - name: Write lockfile after native change
+        working-directory: test-example
+        run: yarn native-lock write
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: regenerated-lockfiles
           path: |
             test-example/gradle.lockfile
             test-example/Podfile.lock

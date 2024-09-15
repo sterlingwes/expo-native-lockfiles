@@ -8,7 +8,6 @@ yarn native-lock --debug write
 write_result=$?
 
 if [ $write_result -ne 0 ]; then
-  cat ios/Podfile
   echo "Failed to write native lock files"
   exit 1
 fi
