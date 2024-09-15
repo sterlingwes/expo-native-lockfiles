@@ -29,7 +29,7 @@ export const disablePodfilePrepareHook = async ({
     );
   }
 
-  const podfileBackupPath = `${podHelperPath}.bak`;
+  const podfileBackupPath = `${podfilePath}.bak`;
   await copyFile(podfilePath, podfileBackupPath);
 
   await replaceInFile({
@@ -106,8 +106,22 @@ export const mockXcodebuild = async ({
         `mockXcodebuild: restoring original xcodebuild -version calls in ${podHelperPath} and ${glogPodspecPath} from ${podHelperBackupPath} and ${glogPodspecBackupPath}`
       );
     }
-    await $`mv ${podHelperBackupPath} ${podHelperPath}`;
-    await $`mv ${glogPodspecBackupPath} ${glogPodspecPath}`;
+    try {
+      await $`mv ${podHelperBackupPath} ${podHelperPath}`;
+    } catch (e) {
+      console.log(
+        `Failed to restore ${podHelperPath} from ${podHelperBackupPath}`
+      );
+      console.error(e);
+    }
+    try {
+      await $`mv ${glogPodspecBackupPath} ${glogPodspecPath}`;
+    } catch (e) {
+      console.log(
+        `Failed to restore ${glogPodspecPath} from ${glogPodspecBackupPath}`
+      );
+      console.error(e);
+    }
   };
 
   return unmock;
