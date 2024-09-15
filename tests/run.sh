@@ -4,7 +4,7 @@ cd test-example
 
 echo "Writing test lockfile ==============================="
 
-yarn native-lock write
+yarn native-lock --debug write
 write_result=$?
 
 if [ $write_result -ne 0 ]; then
@@ -14,7 +14,7 @@ fi
 
 echo "Checking lockfile ==============================="
 
-yarn native-lock check
+yarn native-lock --debug check
 check_result=$?
 
 if [ $check_result -ne 0 ]; then
