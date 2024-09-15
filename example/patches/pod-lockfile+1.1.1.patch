@@ -1,8 +1,8 @@
 diff --git a/node_modules/pod-lockfile/dist/main.js b/node_modules/pod-lockfile/dist/main.js
-index a088db7..7d5a980 100644
+index a088db7..43dda6a 100644
 --- a/node_modules/pod-lockfile/dist/main.js
 +++ b/node_modules/pod-lockfile/dist/main.js
-@@ -4,6 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+@@ -4,12 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
  };
  Object.defineProperty(exports, "__esModule", { value: true });
  const child_process_1 = require("child_process");
@@ -24,6 +24,13 @@ index a088db7..7d5a980 100644
  const fs_1 = require("fs");
  const path_1 = require("path");
  const package_json_1 = __importDefault(require("../package.json"));
+ const printHelpAndExit = (exitCode = 0) => {
+     console.log(`
+-    Usage: pod-lockfile [options]
++    Usage: pod-lockfile [options] (patched)
+   
+     Options:
+       --project: The path to the project directory holding a Podfile, defaults to current working directory
 @@ -56,7 +71,7 @@ if (flags["version"]) {
  }
  const podVersion = flags["pod-version"];
