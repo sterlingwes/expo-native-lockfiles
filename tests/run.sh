@@ -6,12 +6,13 @@ echo "Writing test lockfile ==============================="
 
 ls node_modules/react-native
 xchelper="node_modules/react-native/scripts/cocoapods/helpers.rb"
-sedval=$(sed "s/xcodebuild -version/echo Xcode 16.0/g" "$xchelper")
+sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$xchelper")
 echo "sedval $sedval"
 echo "$sedval" > "$xchelper"
-ls node_modules/react-native/scripts/cocoapods/
-echo "xchelper $xchelper"
-cat "$xchelper"
+glogspec="node_modules/react-native/third-party-podspecs/glog.podspec"
+sedval=$(sed "s/xcodebuild -version/echo Xcode 15.4/g" "$glogspec")
+echo "sedval $sedval"
+echo "$sedval" > "$glogspec"
 yarn expo prebuild --clean -p ios
 podfile=$(sed "s/prepare_react_native_project\!//g" ios/Podfile)
 echo "puts File.join(File.dirname(\`node --print \"require.resolve('react-native/package.json')\"\`), \"scripts/react_native_pods\")" > ios/Podfile
