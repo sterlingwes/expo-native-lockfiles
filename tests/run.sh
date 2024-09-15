@@ -6,7 +6,7 @@ echo "Writing test lockfile ==============================="
 
 ls node_modules/react-native
 yarn expo prebuild --clean -p ios
-echo "puts File.join(File.dirname(`node --print \"require.resolve('react-native/package.json')\"`), \"scripts/react_native_pods\")\n\n$(cat ios/Podfile)" > ios/Podfile
+echo "puts File.join(File.dirname(\`node --print \"require.resolve('react-native/package.json')\"\`), \"scripts/react_native_pods\")\n\n$(cat ios/Podfile)" > ios/Podfile
 yarn pod-lockfile --debug --project ./ios
 
 yarn native-lock --debug write
