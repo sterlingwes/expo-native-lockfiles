@@ -8,6 +8,12 @@
   "bin": {
     "native-lock": "./cli/native-lock.sh"
   },
+  "files": [
+    "app.plugin.js",
+    "cli/build",
+    "cli/native-lock.sh",
+    "plugin/build"
+  ],
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "expo": "~51.0.28",
