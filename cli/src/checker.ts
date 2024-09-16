@@ -35,20 +35,24 @@ const getPodLockfileStableChecksum = async (project: string = ".") => {
 
 export const checkLockfilesAndExit = async ({
   debug,
+  android,
   project,
 }: {
   debug?: boolean;
+  android?: boolean;
   project: string;
 }) => {
   const basePodfileChecksum = shasumHash(await getPodLockfileStableChecksum());
-  const baseGradleChecksum = shasumHash(await $`shasum gradle.lockfile`);
-
   const podfileChecksum = shasumHash(
     await getPodLockfileStableChecksum(project)
   );
-  const gradleChecksum = shasumHash(
-    await $`shasum android/app/gradle.lockfile`
-  );
+
+  let baseGradleChecksum = "";
+  let gradleChecksum = "";
+  if (android) {
+    baseGradleChecksum = shasumHash(await $`shasum gradle.lockfile`);
+    gradleChecksum = shasumHash(await $`shasum android/app/gradle.lockfile`);
+  }
 
   const podfileChecksumMatch = podfileChecksum === basePodfileChecksum;
   const gradleChecksumMatch = gradleChecksum === baseGradleChecksum;
@@ -56,8 +60,10 @@ export const checkLockfilesAndExit = async ({
   if (debug) {
     console.log("New Podfile.lock checksum:", podfileChecksum);
     console.log("Old Podfile.lock checksum:", basePodfileChecksum);
-    console.log("New gradle.lockfile checksum:", gradleChecksum);
-    console.log("Old gradle.lockfile checksum:", baseGradleChecksum);
+    if (android) {
+      console.log("New gradle.lockfile checksum:", gradleChecksum);
+      console.log("Old gradle.lockfile checksum:", baseGradleChecksum);
+    }
     console.log({ podfileChecksumMatch, gradleChecksumMatch });
   }
 

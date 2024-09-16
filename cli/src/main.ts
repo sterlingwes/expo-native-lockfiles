@@ -17,6 +17,11 @@ if (process.argv.includes("--debug")) {
   debug = true;
 }
 
+let android = false;
+if (process.argv.includes("--android")) {
+  android = true;
+}
+
 const xcVersion = process.env.XCVERSION || "15.4";
 
 const cliCmdIndex = process.argv.findIndex((arg) =>
@@ -43,6 +48,7 @@ Subcommands:
   help: Print this help message.
 
 Options:
+  --android: Generate or check a lockfile for Android (opt-in).
   --non-interactive: Skip interactive prompts (assumes 'yes').
   --debug: Print debug information.
 
@@ -122,22 +128,27 @@ const run = async () => {
     process.exit(1);
   }
 
-  await $`cd android && ./gradlew app:dependencies --write-locks`;
+  if (android) {
+    await $`cd android && ./gradlew app:dependencies --write-locks`;
 
-  const gradleLockExists = existsSync("android/app/gradle.lockfile");
-  if (!gradleLockExists) {
-    console.warn(
-      'gradle.lockfile does not exist at android/app/gradle.lockfile. Have you setup "expo-native-lockfiles" as an expo plugin in your app.json? Aborting.'
-    );
-    process.exit(1);
+    const gradleLockExists = existsSync("android/app/gradle.lockfile");
+    if (!gradleLockExists) {
+      console.warn(
+        'gradle.lockfile does not exist at android/app/gradle.lockfile. Have you setup "expo-native-lockfiles" as an expo plugin in your app.json? Aborting.'
+      );
+      process.exit(1);
+    }
   }
 
   if (checkMode) {
-    await checkLockfilesAndExit({ debug, project: basePath });
+    await checkLockfilesAndExit({ debug, android, project: basePath });
   }
 
   await copyFile("ios/Podfile.lock", "Podfile.lock");
-  await copyFile("android/app/gradle.lockfile", "gradle.lockfile");
+
+  if (android) {
+    await copyFile("android/app/gradle.lockfile", "gradle.lockfile");
+  }
 
   linebreak();
   console.log("Lockfiles have been copied to the root of your project.");
