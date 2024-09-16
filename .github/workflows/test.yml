@@ -44,7 +44,7 @@ jobs:
       - name: Check lockfile after native change
         working-directory: test-example
         run: |
-          set -e
+          set +e
           yarn native-lock --debug check
           check_result=$?
 
