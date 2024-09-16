@@ -78,7 +78,7 @@ const expoPrebuildCommand = "expo prebuild --clean --no-install";
 
 const run = async () => {
   if (checkMode) {
-    precheck();
+    precheck({ android });
   }
 
   if (nonInteractive === false) {

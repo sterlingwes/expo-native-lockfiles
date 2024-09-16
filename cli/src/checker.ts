@@ -3,9 +3,9 @@ import { existsSync } from "fs";
 import { readFile, writeFile } from "fs/promises";
 import { $, shasumHash } from "./utils";
 
-export const precheck = () => {
+export const precheck = ({ android }: { android?: boolean }) => {
   const basePodfileExists = existsSync("Podfile.lock");
-  const baseGradleLockExists = existsSync("gradle.lockfile");
+  const baseGradleLockExists = android ? existsSync("gradle.lockfile") : true;
   if (!basePodfileExists || !baseGradleLockExists) {
     console.warn(
       "Base lockfiles do not exist at Podfile.lock or gradle.lockfile. Run `yarn native-lock` to generate them before running with --check."
