@@ -66,7 +66,8 @@ It can also be good to have visibility into the state of native dependencies for
 
 Things to iron out:
 
-- [ ] get full scenario CI test workflow passing (issue w/ plugin always writing?)
+- [x] get full scenario CI test workflow passing (issue w/ plugin always writing?)
+- [ ] make android opt-in for now (composite builds aren't covered by "app" lockfile so it's a partial picture)
 - [ ] make xcode version (and others?) clearer and configurable
 - [ ] allow for running for a specific platform
 - [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
