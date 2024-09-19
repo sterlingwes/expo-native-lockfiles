@@ -81,13 +81,28 @@ const withPodsLockfile: ConfigPlugin = (config) => {
   ]);
 };
 
-const withLockfilePlugin: ConfigPlugin = (config) => {
+type PluginProps =
+  | {
+      android?: boolean;
+    }
+  | undefined;
+
+const withLockfilePlugin: ConfigPlugin<PluginProps> = (config, props) => {
   if (!generating) {
     WarningAggregator.addWarningIOS(
       pluginTag,
       "Lockfiles are not being generated (running in check mode)."
     );
+
+    if (!props?.android) {
+      return config;
+    }
+
     return withGradleLockfileActivated(config);
+  }
+
+  if (!props?.android) {
+    return withPodsLockfile(config);
   }
 
   return withGradleLockfileActivated(

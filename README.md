@@ -32,6 +32,7 @@ Subcommands:
   help: Print this help message.
 
 Options:
+  --android: Generate or check a lockfile for Android (opt-in).
   --non-interactive: Skip interactive prompts (assumes 'yes').
   --debug: Print debug information.
 ```
@@ -62,14 +63,19 @@ The above may be desirable if you're OK with the risk that the underlying depend
 
 It can also be good to have visibility into the state of native dependencies for security scanning or supply chain management (SAST scans). With the recommended approach of ignoring the native project folders under CNG, you have no visibility into what dependencies your yarn lockfile-defined dependencies are pulling in.
 
+## A note on gradle.lockfile
+
+React Native dependencies on Android aren't really dependencies but instead are "sub projects" that are included into the main "app" project. This structure is termed a Composite Build. Gradle's locking mechanism does not support composite builds out of the box. More work on this to follow.
+
 ## Roadmap to v1
 
 Things to iron out:
 
 - [x] get full scenario CI test workflow passing (issue w/ plugin always writing?)
-- [ ] make android opt-in for now (composite builds aren't covered by "app" lockfile so it's a partial picture)
+- [x] make android opt-in for now (composite builds aren't covered by "app" lockfile so it's a partial picture)
 - [ ] make xcode version (and others?) clearer and configurable
 - [ ] allow for running for a specific platform
 - [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
 - [ ] figure out how to speed up the gradle lockfile write (--offline w/ cache?)
 - [ ] add a simple readme example for CI check config
+- [ ] merging gradle lockfiles of all composite build projects beyond just "app"
