@@ -1,6 +1,6 @@
 {
   "name": "expo-native-lockfiles",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "app.plugin.js",
   "repository": "https://github.com/sterlingwes/expo-native-lockfiles",
   "author": "Wes Johnson <wes@swj.io>",
