@@ -65,17 +65,17 @@ It can also be good to have visibility into the state of native dependencies for
 
 ## A note on gradle.lockfile
 
-React Native dependencies on Android aren't really dependencies but instead are "sub projects" that are included into the main "app" project. This structure is termed a Composite Build. Gradle's locking mechanism does not support composite builds out of the box. More work on this to follow.
+React Native dependencies on Android aren't really dependencies but instead are "sub projects" that are included into the main "app" project. This structure is termed a multi-project build. Gradle's locking mechanism does not support multi-project builds out of the box. More work on this to follow.
 
 ## Roadmap to v1
 
 Things to iron out:
 
 - [x] get full scenario CI test workflow passing (issue w/ plugin always writing?)
-- [x] make android opt-in for now (composite builds aren't covered by "app" lockfile so it's a partial picture)
+- [x] make android opt-in for now (multi-project builds aren't covered by "app" lockfile so it's a partial picture)
 - [ ] make xcode version (and others?) clearer and configurable
 - [ ] allow for running for a specific platform
 - [ ] provide better API or guidance for upgrade path (Expo / React Native bumps)
 - [ ] figure out how to speed up the gradle lockfile write (--offline w/ cache?)
 - [ ] add a simple readme example for CI check config
-- [ ] merging gradle lockfiles of all composite build projects beyond just "app"
+- [ ] merging gradle lockfiles of all multi-project build projects beyond just "app"
